@@ -39,9 +39,51 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-
+function Person(theName, theAge) {
+  this.name = theName,
+  this.age = theAge,
+  this.stomach = []
 }
+
+Person.prototype.eat = function(someFood){
+  if(this.stomach.length < 10){
+    this.stomach.push(someFood);
+  }
+}
+
+Person.prototype.poop = function(){
+  while(this.stomach.length > 0){
+    this.stomach.pop();
+  }
+}
+
+Person.prototype.toString = function(){
+  return `${this.name}, ${this.age}`;
+}
+
+
+/*                              The commented-out lines below are just tests that I don't feel like typing-out again if for some reason I need to return to this challenge
+
+let personOne = new Person("Greg", 12);
+
+console.log(personOne);
+personOne.eat("food item 1");
+personOne.eat("food item 2");
+personOne.eat("food item 3");
+personOne.eat("food item 4");
+personOne.eat("food item 5");
+personOne.eat("food item 6");
+personOne.eat("food item 7");
+personOne.eat("food item 8");
+personOne.eat("food item 9");
+personOne.eat("food item 10");
+personOne.eat("food item 11");
+personOne.eat("food item 12");
+console.log(personOne);
+personOne.poop();
+console.log(personOne);
+console.log(personOne.toString());
+/*
 
 /*
   TASK 2
@@ -57,8 +99,30 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-
+function Car(type, mpg) {
+  this.model = type,
+  this.milesPerGallon = mpg
+  this.tank = 0,
+  this.odometer = 0
+}
+Car.prototype.fill = function(gallons){
+  this.tank+= gallons;
+}
+Car.prototype.drive = function(distance){
+  if(this.tank == 0){
+    return `I ran out of fuel at ${this.odometer} miles!`
+  }
+  else if(this.tank <= distance/this.milesPerGallon)
+  {
+    this.odometer += this.tank * this.milesPerGallon;
+    this.tank = 0;
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  }
+  else if(this.tank > distance/this.milesPerGallon)
+  {
+    this.tank -= distance/this.milesPerGallon;
+    this.odometer = (this.odometer + distance);
+  }
 }
 
 /*
@@ -68,18 +132,25 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
+}
 
+Baby.prototype = Object.create(Person.prototype);
+
+Baby.prototype.play = function(){
+  return `Playing with ${this.favoriteToy}`;
 }
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Window Binding: if none of the other rules apple, "this" will default to the window (Unless in strict mode, in which case it will return undefined)
+  2. Implicit Binding: when the function is invoked, "this" will refer to whater is left of the dot
+  3. Explicit Binding: allows us to explicitly state what "this" refers to
+  4. New Binding: using the "new" keyword, it constructs a new object and "this" points to it
 */
 
 
